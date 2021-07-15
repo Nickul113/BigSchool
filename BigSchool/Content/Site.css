@@ -1,24 +1,80 @@
 ﻿body {
-    padding-top: 50px;
-    padding-bottom: 20px;
+    padding-top:50px;
+    padding-bottom:20px;
+}
+.body content{
+    padding-left:15px;
+    padding-right:15px;
 }
 
-/* Set padding to keep content from hitting the edges */
-.body-content {
-    padding-left: 15px;
-    padding-right: 15px;
+
+input,
+select,
+textarea{
+    max-width:280px;
 }
 
-/* Override the default bootstrap behavior where horizontal description lists 
-   will truncate terms that are too long to fit in the left column 
-*/
+.navbar {
+    background-color: #808080;
+    border-color: white;
+}
+
+    .navbar-inserse .navbar-brand {
+        color: white;
+    }
+/*Course layout*/
+/*.course {
+    list-style: none;
+}
+
+    .course > li {
+        position: relative;
+        margin-bottom: 30px;
+    }
+
+        .course > li.date {
+            text-align: center;
+            background-color: #d41d50;
+            color: white;
+            width: 60px;
+            border-radius: 800px;
+        }
+
+        .course > li.details {
+            position: absolute;
+            top: 0;
+            left: 70px;
+        }*/
+
 .dl-horizontal dt {
     white-space: normal;
 }
 
-/* Set width on the form input elements since they're 100% wide by default */
-input,
-select,
-textarea {
-    max-width: 280px;
+#Cuong {
+    list-style: none;
+}
+    #Cuong > li {
+        position: relative;
+        margin-bottom: 30px;
+    }
+        #Cuong > li .date {
+            text-align: center;
+            background-color: #808080;
+            color: white;
+            width: 60px;
+            border-radius: 8px;
+        }
+        #Cuong> li .details {
+            position: absolute;
+            top: 0;
+            left: 70px;
+        }
+
+#Cuong > li.action {
+    display: none;
+    left: 70px;
+    position: absolute;
+}
+#Cuong > li:hover .action {
+    display: block;
 }
