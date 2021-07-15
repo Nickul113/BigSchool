@@ -1,38 +1,54 @@
-﻿@model BigSchool.ViewModels.CourseViewModel
+﻿
+@model BigSchool.ViewModels.CoursesViewModel
 @{
     ViewBag.Title = "Home Page";
 }
- <ul class="course" id="Cuong">
-        @foreach (var course in Model.UpcommingCourses)
-            {
-                <li>
-                   <div class="date">
-                       <div class="month">
-                           @course.DateTime.ToString("MM")
-                       </div>
-                       <div class="day">
-                           @course.DateTime.ToString("dd")
-                       </div>
-                   </div>
-                    <div class="details">
-                        <span class="lecturer">
-                            @course.Lecturer.Name
-                            @if (Model.ShowAction)
-                            {
-                                <button class="btn btn-link btn-sm js-toggle-follow" data-user-id="@course.LecturerId">Follow</button>
-                            }
-                        </span>
-                        <span class="catetory">
-                            @course.Category.Name
-                        </span>
-                        @if (Model.ShowAction)
+@using Microsoft.AspNet.Identity
+<ul class="course" id="Cuong">
+    @foreach (var course in Model.UpcommingCourses)
+    {
+        <li>
+            <div class="date">
+                <div class="month">
+                    @course.DateTime.ToString("MM")
+                </div>
+                <div class="day">
+                    @course.DateTime.ToString("dd")
+                </div>
+            </div>
+            <div class="details">
+                <span class="lecturer">
+                    @course.Lecturer.Name
+                    @if (Model.ShowAction)
+                    {
+                        if (Model.CheckFollow(course.LecturerId, User.Identity.GetUserId()))
                         {
-                        <button data-course-id="@course.Id" class="btn btn-default btn-sm js-toggle-attendance">Going?</button>
+                            <button data-user-id="@course.LecturerId" class="btn btn-success btn-sm js-toggle-un-follow">Following</button>
                         }
-                    </div>
-                </li>
-            }
- </ul>
+                        else
+                        {
+                            <button data-user-id="@course.LecturerId" class="btn btn-default btn-sm js-toggle-follow">Follow</button>
+                        }
+                    }
+                </span>
+                <span class="catetory">
+                    @course.Category.Name
+                </span>
+                @if (Model.ShowAction)
+                {
+                    if (Model.CheckAttend(course.Id, User.Identity.GetUserId()))
+                    {
+                        <button data-course-id="@course.Id" class="btn btn-success btn-sm js-toggle-un-attendance">Going</button>
+                    }
+                    else
+                    {
+                        <button data-course-id="@course.Id" class="btn btn-default btn-sm js-toggle-attendance">Going?</button>
+                    }
+                }
+            </div>
+        </li>
+    }
+</ul>
 @section scripts
 {
     <script>
@@ -63,6 +79,47 @@
                     });
             });
         });
-    </script>    
+    </script>
+}
+
+@section scripts
+{
+    <script>
+        $(document).ready(function () {
+            //Hủy theo dõi giảng viên
+            $(".js-toggle-un-follow").click(function (e) {
+                var button = $(e.target);
+                $.post("api/unfollow", { followeeId: button.attr("data-user-id") })
+                    .done(function () {
+                        button
+                            .removeClass("btn-success")
+                            .addClass("btn-default")
+                            .text("Follow");
+                    })
+                    .fail(function () {
+                        alert("Something failed!");
+                    });
+
+            });
+        });
+        // Hủy tham gia khóa học
+        $(document).ready(function () {
+            //Hủy theo dõi giảng viên
+            $(".js-toggle-un-attendance").click(function (e) {
+                var button = $(e.target);
+                $.post("api/unattend", { courseId: button.attr("data-course-id") })
+                    .done(function () {
+                        button
+                            .removeClass("btn-success")
+                            .addClass("btn-default")
+                            .text("Going?");
+                    })
+                    .fail(function () {
+                        alert("Something failed!");
+                    });
+
+            });
+        });
+    </script>
 }
 
